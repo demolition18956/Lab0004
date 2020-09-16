@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->loadButton, &QPushButton::clicked, this, &MainWindow::ImportFile);
 
-    this->installEventFilter(this);
+//    this->installEventFilter(this);
 
 }
 
@@ -46,20 +46,41 @@ void MainWindow::ImportFile(){
     }
 }
 
-bool MainWindow::eventFilter(QObject *watched, QEvent *e)
-{
-    if (e->type() == QEvent::KeyPress)
-    {
+bool MainWindow::event(QEvent *e){
+    if (e && e->type() == QEvent::KeyPress){
         QKeyEvent* ke = static_cast<QKeyEvent*>(e);
         if (ke->key() == Qt::Key_Escape){
             qDebug() << "Escape";
-            bool ok;
-            int n = statusLabel->text().toInt(&ok) + 1;
-            if (ok){
-                statusLabel->setText(QString::number(n));
-            }
-            return true;
         }
     }
-    return QMainWindow::eventFilter(watched,e);
+    return QMainWindow::event(e);
 }
+
+void MainWindow::keyPressEvent(QKeyEvent *ke) {
+    if (ke && ke->key() == Qt::Key_Escape){
+        bool ok;
+        int n = statusLabel->text().toInt(&ok) + 1;
+        if (ok){
+            statusLabel->setText(QString::number(n));
+        }
+    }
+    QMainWindow::keyPressEvent(ke);
+}
+
+//bool MainWindow::eventFilter(QObject *watched, QEvent *e)
+//{
+//    if (e->type() == QEvent::KeyPress)
+//    {
+//        QKeyEvent* ke = static_cast<QKeyEvent*>(e);
+//        if (ke->key() == Qt::Key_Escape){
+//            qDebug() << "Escape";
+//            bool ok;
+//            int n = statusLabel->text().toInt(&ok) + 1;
+//            if (ok){
+//                statusLabel->setText(QString::number(n));
+//            }
+//            return true;
+//        }
+//    }
+//    return QMainWindow::eventFilter(watched,e);
+//}

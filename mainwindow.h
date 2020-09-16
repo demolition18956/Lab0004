@@ -15,7 +15,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    bool eventFilter(QObject* watched, QEvent* e);
+//    bool eventFilter(QObject* watched, QEvent* e);
+    bool event(QEvent *e);
+
+protected:
+    void keyPressEvent(QKeyEvent *ke);
 
 private:
     Ui::MainWindow *ui;
